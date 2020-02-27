@@ -1,0 +1,70 @@
+.App {
+  text-align: center;
+}
+
+#button0 {
+  background-color: yellow;
+}
+
+.cheater{
+    padding-left:10px;
+  }
+
+  .button{
+      display: inline;
+      padding-right: 10px;
+  }
+
+#guessedWords {
+  list-style-type: none;
+}
+
+ .game{
+     padding-left:10px;
+	 display: flex;
+	 justify-content: space-between;
+   }
+
+  .letsplay{
+      padding-top:50px;
+  }
+
+  .buttons{
+      display: inline;
+  }
+
+.scoreandlist{
+	margin-top: 10%;
+	margin-right: 10%;
+}
+
+.score{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	  width: 30px;
+	height: 30px;
+  border: 5px solid;
+  padding: 5px;
+}
+
+.list{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+  border: 5px solid;
+  padding: 5px;
+}
+
+.validation {
+  color: red;
+}
+
+.submit{
+    padding-left:10px;
+    display: inline;
+  }
+
+.welcome{
+    text-align: center;
+}
