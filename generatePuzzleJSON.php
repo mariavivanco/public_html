@@ -18,17 +18,18 @@ else {
   $randomPuzzleString = $arrayOfPuzzles[array_rand($arrayOfPuzzles)];
 }
 
-if(array_key_exists("guessedWordList", $_SESSION)) {
-  $guessedWordList = $_SESSION["guessedWordList"];
-  echo("1");
+if(array_key_exists("score", $_SESSION)) {
+  $totalPoints = $_SESSION["score"];
+  echo("already has a score!!!!");
 }
 else {
-  $guessedWordList = ["maria"];
-  echo("2");
+  $totalPoints = 123988;
+  echo("doesn't have the score!");
 }
 
+
 $_SESSION["puzzle"] = $randomPuzzleString;
-$_SESSION["guessedWordList"] = $guessedWordList;
+$_SESSION["score"] = $totalPoints;
 
 #split the array into each piece (each element is either the puzzle letters or the answers)
 $randomPuzzleArray = explode("\n", $randomPuzzleString);
@@ -95,7 +96,7 @@ $data = json_encode($puzzleJSON);
       </div>
       <div class="scoreandlist">
         <p>Score</p>
-        <div class="score"><p id="points"></p></div>
+        <div class="score"><p id="points"><?php echo ($totalPoints);?></p></div>
         <p>List of Guessed Words</p>
         <div class="list">
           <ul id="guessedWords"></ul>
@@ -131,16 +132,7 @@ $data = json_encode($puzzleJSON);
       var cheatInput = document.getElementById("cheatInput");
       var validation = document.getElementById("validation");
       var guessedWords = document.getElementById("guessedWords");
-      //          echo($_SESSION["guessedWordList"]);
-
-          <?php
-          echo ("var guessedWordList = [];
-          foreach($_SESSION["guessedWordList"] as $result) {
-            guessedWordList.push($result);
-          }
-          "
-          ?>
-      console.log(guessedWordList);
+      var guessedWordList = [];
       var score = document.getElementById("points");
 
       var button0 = document.getElementById("button0");
@@ -220,16 +212,14 @@ $data = json_encode($puzzleJSON);
           guessedWords.appendChild(li);
           var turnPoints = updateScore(userGuess);
           console.log(turnPoints);
-          var totalPoints = parseInt(score.textContent) + turnPoints;
-          score.innerHTML = totalPoints;
           //var totalPoints = parseInt(score.textContent) + turnPoints;
-          // have javascript send http (a form that has the word list)
-          // update the list of guessed words on the server
-          // guessedWordList.append(userGuess);
-          // var xmlHttp = new XMLHttpRequest();
-          // xmlHttp.open("GET", http://sargas.cs.brynmawr.edu/~strump, false);
-          // xmlHttp.send(guessedWordList);
-          // return xmlHttp.responseText;
+          <?php
+            echo("
+              var totalPoints = $totalPoints;
+            ")
+        ?>
+        score.innerHTML = totalPoints;
+
         }
         setTimeout(function(){
           validation.innerHTML = "";
