@@ -20,11 +20,9 @@ else {
 
 if(array_key_exists("guessedWordList", $_SESSION)) {
   $guessedWordList = $_SESSION["guessedWordList"];
-  echo("1");
 }
 else {
-  $guessedWordList = ["maria"];
-  echo("2");
+  $guessedWordList = [];
 }
 
 $_SESSION["puzzle"] = $randomPuzzleString;
@@ -113,14 +111,18 @@ $data = json_encode($puzzleJSON);
       <p class="answers"></p>
     </div>
 
+
     <script>
       <?php
+        $guessedWordList = json_encode($guessedWordList);
       echo("
         var puzzleLetters = $data.puzzleLetters;
         var solutions = $data.solutions;
         var keyLetter = $data.keyLetter;
+        var guessedWordList = $guessedWordList;
         ");
       ?>
+      console.log("the guessed words are: " + guessedWordList);
       console.log("puzzle letters are:" + puzzleLetters);
       console.log("key letter is:" + keyLetter);
       console.log("solutions are:" + solutions);
@@ -133,14 +135,7 @@ $data = json_encode($puzzleJSON);
       var guessedWords = document.getElementById("guessedWords");
       //          echo($_SESSION["guessedWordList"]);
 
-          <?php
-          echo ("var guessedWordList = [];
-          foreach($_SESSION["guessedWordList"] as $result) {
-            guessedWordList.push($result);
-          }
-          "
-          ?>
-      console.log(guessedWordList);
+    //  console.log(guessedWordList);
       var score = document.getElementById("points");
 
       var button0 = document.getElementById("button0");
@@ -225,9 +220,9 @@ $data = json_encode($puzzleJSON);
           //var totalPoints = parseInt(score.textContent) + turnPoints;
           // have javascript send http (a form that has the word list)
           // update the list of guessed words on the server
-          // guessedWordList.append(userGuess);
+        //  guessedWordList.append(userGuess);
           // var xmlHttp = new XMLHttpRequest();
-          // xmlHttp.open("GET", http://sargas.cs.brynmawr.edu/~strump, false);
+          // xmlHttp.open("GET", http://sargas.cs.brynmawr.edu/~strump/a.php?, false);
           // xmlHttp.send(guessedWordList);
           // return xmlHttp.responseText;
         }
