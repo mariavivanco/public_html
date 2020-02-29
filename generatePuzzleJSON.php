@@ -166,13 +166,22 @@ $data = json_encode($puzzleJSON);
       button5.innerHTML = puzzleLetters[4].toUpperCase();
       button6.innerHTML = puzzleLetters[5].toUpperCase();
 
-
+      // update the guessed word list with the data from the server
       var i;
       for(i = 0; i < guessedWordList.length; i++) {
 	var li = document.createElement("li");
 	li.appendChild(document.createTextNode(guessedWordList[i]));
 	guessedWords.appendChild(li);
 	}
+
+     // now use the guessed word list from the server to update the score
+     var j;
+     var total = 0;
+     for(j = 0; j < guessedWordList.length; j++) {
+	var wordPoints = updateScore(guessedWordList[j]);
+	total += parseInt(score.textContent) + wordPoints;	
+	}
+     score.innerHTML = total;
 
 	
 		
