@@ -26,6 +26,11 @@ else {
 }
 
 $_SESSION["puzzle"] = $randomPuzzleString;
+
+if(isset($_REQUEST["guessedWordList"]) && $_REQUEST["guessedWordList"] != "") {
+	$guessedWordList = $_REQUEST["guessedWordList"];
+}
+
 $_SESSION["guessedWordList"] = $guessedWordList;
 
 #split the array into each piece (each element is either the puzzle letters or the answers)
@@ -113,15 +118,21 @@ $data = json_encode($puzzleJSON);
 
 
     <script>
-      <?php
+<?php
         $guessedWordList = json_encode($guessedWordList);
       echo("
         var puzzleLetters = $data.puzzleLetters;
         var solutions = $data.solutions;
         var keyLetter = $data.keyLetter;
-        var guessedWordList = $guessedWordList;
+	var guessedWordList = $guessedWordList;
+	
         ");
-      ?>
+?>
+//	guessedWordList = guessedWordList.split(",");
+	alert(guessedWordList);	
+	alert(typeof guessedWordList);
+	alert("1");
+
       console.log("the guessed words are: " + guessedWordList);
       console.log("puzzle letters are:" + puzzleLetters);
       console.log("key letter is:" + keyLetter);
@@ -153,6 +164,15 @@ $data = json_encode($puzzleJSON);
       button4.innerHTML = puzzleLetters[3].toUpperCase();
       button5.innerHTML = puzzleLetters[4].toUpperCase();
       button6.innerHTML = puzzleLetters[5].toUpperCase();
+
+
+	alert("2");
+	var li = document.createElement("li");
+	li.appendChild(document.createTextNode(guessedWordList));
+	guessedWords.appendChild(li);
+	alert("3");
+		
+
 
       button0.onclick = function(){
         userInput.value = userInput.value + keyLetter.toUpperCase();
@@ -205,26 +225,41 @@ $data = json_encode($puzzleJSON);
         else if (guessedWordList.includes(userGuess)){
           validation.innerHTML = "Already guessed. ";
         }
-        else {
-          validation.innerHTML = "Valid guess!";
-          guessedWordList.push(userGuess);
+	else {
+	  alert("4");
+	  validation.innerHTML = "Valid guess!";
+	  alert("this is the guessed word list:");
+	 // alert(guessedWordList);
+	 alert(typeof guessedWordList);
+	  guessedWordList.push(userGuess);
+	alert(typeof guessedWordList);
+	  alert("pushed the guessedWordList!");
+	  alert("5");
           console.log(guessedWordList);
-          console.log(guessedWordList.includes(userGuess));
-          var li = document.createElement("li");
+	  console.log(guessedWordList.includes(userGuess));
+	 var li = document.createElement("li");
           li.appendChild(document.createTextNode(userGuess));
           guessedWords.appendChild(li);
           var turnPoints = updateScore(userGuess);
-          console.log(turnPoints);
+	  console.log(turnPoints);
+	  alert("6");
           var totalPoints = parseInt(score.textContent) + turnPoints;
           score.innerHTML = totalPoints;
           //var totalPoints = parseInt(score.textContent) + turnPoints;
           // have javascript send http (a form that has the word list)
-          // update the list of guessed words on the server
-        //  guessedWordList.append(userGuess);
-          // var xmlHttp = new XMLHttpRequest();
-          // xmlHttp.open("GET", http://sargas.cs.brynmawr.edu/~strump/a.php?, false);
-          // xmlHttp.send(guessedWordList);
-          // return xmlHttp.responseText;
+	  // update the list of guessed words on the server
+	  //
+
+	  //
+
+
+	alert("7");
+	alert(guessedWordList);
+
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.open("GET", "generatePuzzleJSON.php?guessedWordList=" + guessedWordList, true);
+	xmlHttp.send();
+	alert("8");
         }
         setTimeout(function(){
           validation.innerHTML = "";
