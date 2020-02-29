@@ -96,10 +96,10 @@ $data = json_encode($puzzleJSON);
         </form>
         <p id="validation"></p>
       </div>
-      <div class="scoreandlist">
+ <div class="scoreandlist">
         <p>Score</p>
-        <div class="score"><p id="points"></p></div>
-        <p>List of Guessed Words</p>
+        <div class="score"><p id="points">0</p></div>
+                <p>List of Guessed Words</p>
         <div class="list">
           <ul id="guessedWords"></ul>
         </div>
@@ -173,6 +173,8 @@ $data = json_encode($puzzleJSON);
 	li.appendChild(document.createTextNode(guessedWordList[i]));
 	guessedWords.appendChild(li);
 	}
+
+	
 		
 
 
