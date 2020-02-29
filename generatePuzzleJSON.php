@@ -128,7 +128,11 @@ $data = json_encode($puzzleJSON);
 	
         ");
 ?>
-//	guessedWordList = guessedWordList.split(",");
+
+	if(typeof guessedWordList === 'string') {
+		guessedWordList = guessedWordList.split(",");
+	}
+
 	alert(guessedWordList);	
 	alert(typeof guessedWordList);
 	alert("1");
