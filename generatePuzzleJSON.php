@@ -133,9 +133,6 @@ $data = json_encode($puzzleJSON);
 		guessedWordList = guessedWordList.split(",");
 	}
 
-	alert(guessedWordList);	
-	alert(typeof guessedWordList);
-	alert("1");
 
       console.log("the guessed words are: " + guessedWordList);
       console.log("puzzle letters are:" + puzzleLetters);
@@ -170,11 +167,12 @@ $data = json_encode($puzzleJSON);
       button6.innerHTML = puzzleLetters[5].toUpperCase();
 
 
-	alert("2");
+      var i;
+      for(i = 0; i < guessedWordList.length; i++) {
 	var li = document.createElement("li");
-	li.appendChild(document.createTextNode(guessedWordList));
+	li.appendChild(document.createTextNode(guessedWordList[i]));
 	guessedWords.appendChild(li);
-	alert("3");
+	}
 		
 
 
@@ -230,15 +228,8 @@ $data = json_encode($puzzleJSON);
           validation.innerHTML = "Already guessed. ";
         }
 	else {
-	  alert("4");
 	  validation.innerHTML = "Valid guess!";
-	  alert("this is the guessed word list:");
-	 // alert(guessedWordList);
-	 alert(typeof guessedWordList);
 	  guessedWordList.push(userGuess);
-	alert(typeof guessedWordList);
-	  alert("pushed the guessedWordList!");
-	  alert("5");
           console.log(guessedWordList);
 	  console.log(guessedWordList.includes(userGuess));
 	 var li = document.createElement("li");
@@ -246,7 +237,6 @@ $data = json_encode($puzzleJSON);
           guessedWords.appendChild(li);
           var turnPoints = updateScore(userGuess);
 	  console.log(turnPoints);
-	  alert("6");
           var totalPoints = parseInt(score.textContent) + turnPoints;
           score.innerHTML = totalPoints;
           //var totalPoints = parseInt(score.textContent) + turnPoints;
@@ -257,13 +247,10 @@ $data = json_encode($puzzleJSON);
 	  //
 
 
-	alert("7");
-	alert(guessedWordList);
 
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.open("GET", "generatePuzzleJSON.php?guessedWordList=" + guessedWordList, true);
 	xmlHttp.send();
-	alert("8");
         }
         setTimeout(function(){
           validation.innerHTML = "";
