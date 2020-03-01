@@ -56,64 +56,67 @@ $data = json_encode($puzzleJSON);
   <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
-
-
+	<h1 class="welcome">Spelling Bee</h1> 
   <div class="game">
     <div class="maingame">
-      <h1 class="welcome">Spelling Bee</h1>
-
-        <div class="buttons">
-          <br>
-          <div class="button">
-            <button id="button0"></button>
-          </div>
-          <div class="button">
-            <button id="button1"></button>
-          </div>
-          <div class="button">
-            <button id="button2"></button>
-          </div>
-          <div class="button">
-            <button id="button3"></button>
-          </div>
-          <div class="button">
-            <button id="button4"></button>
-          </div>
-          <div class="button">
-            <button id="button5"></button>
-          </div>
-          <div class="button">
-            <button id="button6"></button>
-          </div>
-        </div>
         <form class="play">
           <label>
             <input type="text" name="userinput" id="userinput" />
           </label>
-          <div class="submit">
+          <div class="wordsubmit">
             <input type="button" value="Submit" id="SubmitButton"/>
           </div>
         </form>
         <p id="validation"></p>
-      </div>
- <div class="scoreandlist">
-        <p>Score</p>
-        <div class="score"><p id="points">0</p></div>
-                <p>List of Guessed Words</p>
-        <div class="list">
-          <ul id="guessedWords"></ul>
+        <div class="container">
+          <div class="row">
+            <button id="button3"></button>
+            <button id="button1"></button>
+          </div>
+          <div class="row">
+            <button id="button2"></button>
+            <button id="button0"></button>
+            <button id="button4"></button>
+          </div>
+          <div class="row">
+            <button id="button5"></button>
+            <button id="button6"></button>
+          </div>
+            <br>
+        <div class = "submit" id = "reshuffle">
+            <input type="submit" value="Reshuffle" name="submit"/>
         </div>
-      </div>
-    </div>
-    <div class="cheater">
-      <h3>Unless you want to cheat... </h3>
-      <form action="cheat.php" method="post">
-        <div class="submit" id = "cheatSubmit">
-          <input type="hidden" name="cheatLetters" id="cheatInput" />
-          <input type="submit" value="Give me the answers!" name="submit"/>
         </div>
-      </form>
-      <p class="answers"></p>
+
+      </div>
+      <div class="scoresandlist">
+		<div class="scoreandrank">
+			<div class="rank">
+			<p>Rank</p>
+				<div class="rankbox">
+					<p id="rank">amazing</p>
+				</div>
+			</div>
+			<div class="score">
+				<p>Score</p>
+				<div class="scorebox">
+					<p id="points">0</p>
+				</div>
+			</div>
+		</div>
+		<div class="list">
+        <p>List of Guessed Words</p>
+			<div class="listbox">
+			  <ul id="guessedWords"></ul>
+			</div>
+		</div>
+		<form action="cheat.php" method="post">
+			<div class="submit" id = "cheatSubmit">
+			  <input type="hidden" name="cheatLetters" id="cheatInput" />
+			  <input type="submit" value="Give me the answers!" name="submit"/>
+			</div>
+      	</form>
+      </div>
     </div>
 
 

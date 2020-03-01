@@ -1,70 +1,106 @@
 .App {
+	text-align: center;
+}
+
+.button {
+	display: inline;
+	padding-right: 10px;
+    text-align: center;
+}
+
+.container {
+    position: absolute;
+    margin-top: 30px;
+    
+}
+.row {
+  margin-bottom: 45px;
   text-align: center;
 }
 
-#button0 {
-  background-color: yellow;
+.container .row button {
+  margin: 0 20px;
+
 }
 
-.cheater{
-    padding-left:10px;
-  }
+.buttons {
+	 display: inline;
+ }
 
-  .button{
-      display: inline;
-      padding-right: 10px;
-  }
-
-#guessedWords {
-  list-style-type: none;
+.cheater {
+	padding-left:10px;
 }
 
- .game{
-     padding-left:10px;
-	 display: flex;
-	 justify-content: space-between;
-   }
-
-  .letsplay{
-      padding-top:50px;
-  }
-
-  .buttons{
-      display: inline;
-  }
-
-.scoreandlist{
-	margin-top: 10%;
-	margin-right: 10%;
-}
-
-.score{
+.game {
+	padding-left:10px;
 	display: flex;
-	justify-content: center;
-	align-items: center;
-	  width: 30px;
-	height: 30px;
-  border: 5px solid;
-  padding: 5px;
+	justify-content: space-around;
 }
 
-.list{
+.letsplay {
+	padding-top:50px;
+ }
+
+.listbox {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
-  border: 5px solid;
-  padding: 5px;
+	border: 5px solid;
+	padding: 5px;
+	height: 300px;
 }
 
-.validation {
-  color: red;
+.maingame {
+	flex-grow: 1;
 }
 
-.submit{
+.rankbox {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 70px;
+	height: 30px;
+	border: 5px solid;
+	padding: 5px;
+}
+
+
+.scoreandrank {
+	display: flex;
+	justify-content: space-between;
+	margin-right: 30%;
+}
+
+.scorebox {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30px;
+	height: 30px;
+	border: 5px solid;
+	padding: 5px;
+}
+
+.scoresandlist {
+	flex-grow: 1;
+	align-items: flex-start;
+	margin-right: 10%;
+	margin-left: 20%;
+
+}
+
+.wordsubmit {
     padding-left:10px;
     display: inline;
-  }
+}
 
-.welcome{
+.submit {
+	padding-left:10px;
+	margin-top: 5px;
     text-align: center;
+	
+}
+
+.welcome {
+	text-align: center;
 }
