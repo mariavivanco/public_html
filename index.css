@@ -41,13 +41,21 @@
 	padding-top:50px;
  }
 
-.listbox {
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
+
+
+.listOfWords {
 	border: 5px solid;
-	padding: 5px;
+	/* padding-top: 10px;
+	width: auto; */
 	height: 300px;
+	columns: 2;
+	list-style-type: none;
+	column-fill: auto;
+	margin: 0;
+	margin-block-start: 0;
+    margin-block-end: 0;
+	padding-inline-start: 40px;
+
 }
 
 .maingame {

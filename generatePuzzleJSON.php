@@ -84,7 +84,7 @@ $data = json_encode($puzzleJSON);
           </div>
             <br>
         <div class = "submit" id = "reshuffle">
-            <input type="submit" value="Reshuffle" name="submit"/>
+            <input type="submit" id = "reshuffleButton" value="Reshuffle" name="submit"/>
         </div>
         </div>
 
@@ -107,7 +107,7 @@ $data = json_encode($puzzleJSON);
 		<div class="list">
         <p>List of Guessed Words</p>
 			<div class="listbox">
-			  <ul id="guessedWords"></ul>
+			  <ul id="guessedWords" class="listOfWords"></ul>
 			</div>
 		</div>
 		<form action="cheat.php" method="post">
@@ -121,16 +121,16 @@ $data = json_encode($puzzleJSON);
 
 
     <script>
-<?php
-        $guessedWordList = json_encode($guessedWordList);
-      echo("
-        var puzzleLetters = $data.puzzleLetters;
-        var solutions = $data.solutions;
-        var keyLetter = $data.keyLetter;
-	var guessedWordList = $guessedWordList;
-	
-        ");
-?>
+      <?php
+              $guessedWordList = json_encode($guessedWordList);
+            echo("
+              var puzzleLetters = $data.puzzleLetters;
+              var solutions = $data.solutions;
+              var keyLetter = $data.keyLetter;
+        var guessedWordList = $guessedWordList;
+        
+              ");
+      ?>
 
 	if(typeof guessedWordList === 'string') {
 		guessedWordList = guessedWordList.split(",");
@@ -148,6 +148,7 @@ $data = json_encode($puzzleJSON);
       var cheatInput = document.getElementById("cheatInput");
       var validation = document.getElementById("validation");
       var guessedWords = document.getElementById("guessedWords");
+      var reshuffleButton = document.getElementById("reshuffleButton");
       //          echo($_SESSION["guessedWordList"]);
 
     //  console.log(guessedWordList);
@@ -162,20 +163,15 @@ $data = json_encode($puzzleJSON);
       var button6 = document.getElementById("button6");
 
       button0.innerHTML = keyLetter.toUpperCase();
-      button1.innerHTML = puzzleLetters[0].toUpperCase();
-      button2.innerHTML = puzzleLetters[1].toUpperCase();
-      button3.innerHTML = puzzleLetters[2].toUpperCase();
-      button4.innerHTML = puzzleLetters[3].toUpperCase();
-      button5.innerHTML = puzzleLetters[4].toUpperCase();
-      button6.innerHTML = puzzleLetters[5].toUpperCase();
+      makeHive(puzzleLetters);
 
       // update the guessed word list with the data from the server
       var i;
       for(i = 0; i < guessedWordList.length; i++) {
-	var li = document.createElement("li");
-	li.appendChild(document.createTextNode(guessedWordList[i]));
-	guessedWords.appendChild(li);
-	}
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(guessedWordList[i]));
+        guessedWords.appendChild(li);
+      }
 
      // now use the guessed word list from the server to update the score
      var j;
@@ -218,9 +214,13 @@ $data = json_encode($puzzleJSON);
         validate(userGuess);
         userInput.value = "";
       }
-
+      
       cheatSubmitButton.onclick = function() {
         cheatInput.value = keyLetter + puzzleLetters;
+      }
+
+      reshuffleButton.onclick = function() {
+        reshuffle(puzzleLetters);
       }
 
       function validate(userGuess) {
@@ -241,34 +241,34 @@ $data = json_encode($puzzleJSON);
         else if (guessedWordList.includes(userGuess)){
           validation.innerHTML = "Already guessed. ";
         }
-	else {
-	  validation.innerHTML = "Valid guess!";
-	  guessedWordList.push(userGuess);
-          console.log(guessedWordList);
-	  console.log(guessedWordList.includes(userGuess));
-	 var li = document.createElement("li");
-          li.appendChild(document.createTextNode(userGuess));
-          guessedWords.appendChild(li);
-          var turnPoints = updateScore(userGuess);
-	  console.log(turnPoints);
-          var totalPoints = parseInt(score.textContent) + turnPoints;
-          score.innerHTML = totalPoints;
-          //var totalPoints = parseInt(score.textContent) + turnPoints;
-          // have javascript send http (a form that has the word list)
-	  // update the list of guessed words on the server
-	  //
+        else {
+          validation.innerHTML = "Valid guess!";
+          guessedWordList.push(userGuess);
+                console.log(guessedWordList);
+          console.log(guessedWordList.includes(userGuess));
+        var li = document.createElement("li");
+                li.appendChild(document.createTextNode(userGuess));
+                guessedWords.appendChild(li);
+                var turnPoints = updateScore(userGuess);
+          console.log(turnPoints);
+                var totalPoints = parseInt(score.textContent) + turnPoints;
+                score.innerHTML = totalPoints;
+                //var totalPoints = parseInt(score.textContent) + turnPoints;
+                // have javascript send http (a form that has the word list)
+          // update the list of guessed words on the server
+          //
 
-	  //
+          //
 
 
 
-	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.open("GET", "generatePuzzleJSON.php?guessedWordList=" + guessedWordList, true);
-	xmlHttp.send();
-        }
-        setTimeout(function(){
-          validation.innerHTML = "";
-        }, 3500)
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", "generatePuzzleJSON.php?guessedWordList=" + guessedWordList, true);
+        xmlHttp.send();
+              }
+              setTimeout(function(){
+                validation.innerHTML = "";
+              }, 3500)
       }
 
       function isPangram(userGuess){
@@ -292,6 +292,19 @@ $data = json_encode($puzzleJSON);
           }
         }
         return points;
+      }
+      function makeHive (puzzleLetters){
+        button1.innerHTML = puzzleLetters[0].toUpperCase();
+        button2.innerHTML = puzzleLetters[1].toUpperCase();
+        button3.innerHTML = puzzleLetters[2].toUpperCase();
+        button4.innerHTML = puzzleLetters[3].toUpperCase();
+        button5.innerHTML = puzzleLetters[4].toUpperCase();
+        button6.innerHTML = puzzleLetters[5].toUpperCase();
+      }
+
+      function reshuffle(puzzleLetters){
+        var shuffledLetters = puzzleLetters.split('').sort(function(){return  0.5-Math.random()}).join('');
+        makeHive(shuffledLetters);
       }
 
     </script>
