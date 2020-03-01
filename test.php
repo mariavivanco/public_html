@@ -20,17 +20,14 @@ else {
 
 if(array_key_exists("guessedWordList", $_SESSION)) {
   $guessedWordList = $_SESSION["guessedWordList"];
+  echo("1");
 }
 else {
-  $guessedWordList = [];
+  $guessedWordList = ["maria"];
+  echo("2");
 }
 
 $_SESSION["puzzle"] = $randomPuzzleString;
-
-if(isset($_REQUEST["guessedWordList"]) && $_REQUEST["guessedWordList"] != "") {
-	$guessedWordList = $_REQUEST["guessedWordList"];
-}
-
 $_SESSION["guessedWordList"] = $guessedWordList;
 
 #split the array into each piece (each element is either the puzzle letters or the answers)
@@ -56,88 +53,74 @@ $data = json_encode($puzzleJSON);
   <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
-	<h1 class="welcome">Spelling Bee</h1> 
+
+
   <div class="game">
     <div class="maingame">
+      <h1 class="welcome">Spelling Bee</h1>
+
+        <div class="buttons">
+          <br>
+          <div class="button">
+            <button id="button0"></button>
+          </div>
+          <div class="button">
+            <button id="button1"></button>
+          </div>
+          <div class="button">
+            <button id="button2"></button>
+          </div>
+          <div class="button">
+            <button id="button3"></button>
+          </div>
+          <div class="button">
+            <button id="button4"></button>
+          </div>
+          <div class="button">
+            <button id="button5"></button>
+          </div>
+          <div class="button">
+            <button id="button6"></button>
+          </div>
+        </div>
         <form class="play">
           <label>
             <input type="text" name="userinput" id="userinput" />
           </label>
-          <div class="wordsubmit">
+          <div class="submit">
             <input type="button" value="Submit" id="SubmitButton"/>
           </div>
         </form>
         <p id="validation"></p>
-        <div class="container">
-          <div class="row">
-            <button id="button3"></button>
-            <button id="button1"></button>
-          </div>
-          <div class="row">
-            <button id="button2"></button>
-            <button id="button0"></button>
-            <button id="button4"></button>
-          </div>
-          <div class="row">
-            <button id="button5"></button>
-            <button id="button6"></button>
-          </div>
-            <br>
-        <div class = "submit" id = "reshuffle">
-            <input type="submit" value="Reshuffle" name="submit"/>
-        </div>
-        </div>
-
       </div>
-      <div class="scoresandlist">
-		<div class="scoreandrank">
-			<div class="rank">
-			<p>Rank</p>
-				<div class="rankbox">
-					<p id="rank">amazing</p>
-				</div>
-			</div>
-			<div class="score">
-				<p>Score</p>
-				<div class="scorebox">
-					<p id="points">0</p>
-				</div>
-			</div>
-		</div>
-		<div class="list">
+      <div class="scoreandlist">
+        <p>Score</p>
+        <div class="score"><p id="points"></p></div>
         <p>List of Guessed Words</p>
-			<div class="listbox">
-			  <ul id="guessedWords"></ul>
-			</div>
-		</div>
-		<form action="cheat.php" method="post">
-			<div class="submit" id = "cheatSubmit">
-			  <input type="hidden" name="cheatLetters" id="cheatInput" />
-			  <input type="submit" value="Give me the answers!" name="submit"/>
-			</div>
-      	</form>
+        <div class="list">
+          <ul id="guessedWords"></ul>
+        </div>
       </div>
     </div>
-
+    <div class="cheater">
+      <h3>Unless you want to cheat... </h3>
+      <form action="cheat.php" method="post">
+        <div class="submit" id = "cheatSubmit">
+          <input type="hidden" name="cheatLetters" id="cheatInput" />
+          <input type="submit" value="Give me the answers!" name="submit"/>
+        </div>
+      </form>
+      <p class="answers"></p>
+    </div>
 
     <script>
-<?php
-        $guessedWordList = json_encode($guessedWordList);
+      <?php
       echo("
         var puzzleLetters = $data.puzzleLetters;
         var solutions = $data.solutions;
         var keyLetter = $data.keyLetter;
-	var guessedWordList = $guessedWordList;
-	
         ");
-?>
-
-	if(typeof guessedWordList === 'string') {
-		guessedWordList = guessedWordList.split(",");
-	}
-
-
-      console.log("the guessed words are: " + guessedWordList);
+      ?>
       console.log("puzzle letters are:" + puzzleLetters);
       console.log("key letter is:" + keyLetter);
       console.log("solutions are:" + solutions);
@@ -150,7 +133,14 @@ $data = json_encode($puzzleJSON);
       var guessedWords = document.getElementById("guessedWords");
       //          echo($_SESSION["guessedWordList"]);
 
-    //  console.log(guessedWordList);
+          <?php
+          echo ("var guessedWordList = [];
+          foreach($_SESSION["guessedWordList"] as $result) {
+            guessedWordList.push($result);
+          }
+          "
+          ?>
+      console.log(guessedWordList);
       var score = document.getElementById("points");
 
       var button0 = document.getElementById("button0");
@@ -168,27 +158,6 @@ $data = json_encode($puzzleJSON);
       button4.innerHTML = puzzleLetters[3].toUpperCase();
       button5.innerHTML = puzzleLetters[4].toUpperCase();
       button6.innerHTML = puzzleLetters[5].toUpperCase();
-
-      // update the guessed word list with the data from the server
-      var i;
-      for(i = 0; i < guessedWordList.length; i++) {
-	var li = document.createElement("li");
-	li.appendChild(document.createTextNode(guessedWordList[i]));
-	guessedWords.appendChild(li);
-	}
-
-     // now use the guessed word list from the server to update the score
-     var j;
-     var total = 0;
-     for(j = 0; j < guessedWordList.length; j++) {
-	var wordPoints = updateScore(guessedWordList[j]);
-	total += parseInt(score.textContent) + wordPoints;	
-	}
-     score.innerHTML = total;
-
-	
-		
-
 
       button0.onclick = function(){
         userInput.value = userInput.value + keyLetter.toUpperCase();
@@ -241,30 +210,26 @@ $data = json_encode($puzzleJSON);
         else if (guessedWordList.includes(userGuess)){
           validation.innerHTML = "Already guessed. ";
         }
-	else {
-	  validation.innerHTML = "Valid guess!";
-	  guessedWordList.push(userGuess);
+        else {
+          validation.innerHTML = "Valid guess!";
+          guessedWordList.push(userGuess);
           console.log(guessedWordList);
-	  console.log(guessedWordList.includes(userGuess));
-	 var li = document.createElement("li");
+          console.log(guessedWordList.includes(userGuess));
+          var li = document.createElement("li");
           li.appendChild(document.createTextNode(userGuess));
           guessedWords.appendChild(li);
           var turnPoints = updateScore(userGuess);
-	  console.log(turnPoints);
+          console.log(turnPoints);
           var totalPoints = parseInt(score.textContent) + turnPoints;
           score.innerHTML = totalPoints;
           //var totalPoints = parseInt(score.textContent) + turnPoints;
           // have javascript send http (a form that has the word list)
-	  // update the list of guessed words on the server
-	  //
-
-	  //
-
-
-
-	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.open("GET", "generatePuzzleJSON.php?guessedWordList=" + guessedWordList, true);
-	xmlHttp.send();
+          // update the list of guessed words on the server
+          // guessedWordList.append(userGuess);
+          // var xmlHttp = new XMLHttpRequest();
+          // xmlHttp.open("GET", http://sargas.cs.brynmawr.edu/~strump, false);
+          // xmlHttp.send(guessedWordList);
+          // return xmlHttp.responseText;
         }
         setTimeout(function(){
           validation.innerHTML = "";
