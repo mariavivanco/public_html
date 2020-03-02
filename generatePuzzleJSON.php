@@ -53,38 +53,52 @@ $data = json_encode($puzzleJSON);
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="index.css">
+<link rel="stylesheet" type="text/css" href="https://www.cssscript.com/demo/creating-hexagon-buttons-with-pure-css-css3/assets/css/page-style.css">
+<link rel="stylesheet" type="text/css" href="https://www.cssscript.com/demo/creating-hexagon-buttons-with-pure-css-css3/assets/css/hexagons.min.css">
+<link rel="stylesheet" type="text/css" href="index1.css">
+<link href="https://fonts.googleapis.com/css?family=Caladea|Playfair+Display|Spartan&display=swap" rel="stylesheet">
+
+  <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="path/to/hexagons.min.js"></script>
+
 </head>
 <body>
-	<h1 class="welcome">Spelling Bee</h1> 
+
+	<h1 class="welcome">Spelling Bee</h1>
+    <div class = "font">
   <div class="game">
     <div class="maingame">
-        <form class="play">
+
           <label>
-            <input type="text" name="userinput" id="userinput" />
+            <input type="text" name="userinput" id="userinput" autocomplete="off" />
           </label>
           <div class="wordsubmit">
-            <input type="button" value="Submit" id="SubmitButton"/>
+            <input type="button" value="Submit" class = "submit submitButton" id="SubmitButton"/>
           </div>
-        </form>
+
         <p id="validation"></p>
-        <div class="container">
-          <div class="row">
-            <button id="button3"></button>
-            <button id="button1"></button>
+        <div class="beehive">
+	  <div class="row">
+	          <span id="button3" class = "hb hb-md"></span>
+            <span id="button1" class = "hb hb-md"></span>
           </div>
           <div class="row">
-            <button id="button2"></button>
-            <button id="button0"></button>
-            <button id="button4"></button>
+            <span id="button2" class = "hb hb-md"></span>
+            <span id="button0" class = "hb hb-custom hb-md"></span>
+            <span id="button4" class = "hb hb-md"></span>
           </div>
           <div class="row">
-            <button id="button5"></button>
-            <button id="button6"></button>
+            <span id="button5" class = "hb hb-md"></span>
+            <span id="button6" class = "hb hb-md"></span>
           </div>
             <br>
+            <br>
+            <br>
+            <br>
         <div class = "submit" id = "reshuffle">
-            <input type="submit" id = "reshuffleButton" value="Reshuffle" name="submit"/>
+	    <input type="submit" class = "reshuffleButton" id = "reshuffleButton" value="Reshuffle" name="submit"/>
+</a>
+
         </div>
         </div>
 
@@ -113,11 +127,12 @@ $data = json_encode($puzzleJSON);
 		<form action="cheat.php" method="post">
 			<div class="submit" id = "cheatSubmit">
 			  <input type="hidden" name="cheatLetters" id="cheatInput" />
-			  <input type="submit" value="Give me the answers!" name="submit"/>
+			  <input type="submit" value="Give me the answers!" class = "cheatButton" name="submit"/>
 			</div>
       	</form>
       </div>
     </div>
+  </div>
 
 
     <script>
@@ -128,7 +143,7 @@ $data = json_encode($puzzleJSON);
               var solutions = $data.solutions;
               var keyLetter = $data.keyLetter;
         var guessedWordList = $guessedWordList;
-        
+
               ");
       ?>
 
@@ -178,12 +193,12 @@ $data = json_encode($puzzleJSON);
      var total = 0;
      for(j = 0; j < guessedWordList.length; j++) {
 	var wordPoints = updateScore(guessedWordList[j]);
-	total += parseInt(score.textContent) + wordPoints;	
+	total += parseInt(score.textContent) + wordPoints;
 	}
      score.innerHTML = total;
 
-	
-		
+
+
 
 
       button0.onclick = function(){
@@ -214,7 +229,17 @@ $data = json_encode($puzzleJSON);
         validate(userGuess);
         userInput.value = "";
       }
-      
+
+      userInput.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          submitButton.click();
+        }
+      });
+
       cheatSubmitButton.onclick = function() {
         cheatInput.value = keyLetter + puzzleLetters;
       }
@@ -256,11 +281,6 @@ $data = json_encode($puzzleJSON);
                 //var totalPoints = parseInt(score.textContent) + turnPoints;
                 // have javascript send http (a form that has the word list)
           // update the list of guessed words on the server
-          //
-
-          //
-
-
 
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", "generatePuzzleJSON.php?guessedWordList=" + guessedWordList, true);
