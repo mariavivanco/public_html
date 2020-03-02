@@ -56,7 +56,7 @@ $data = json_encode($puzzleJSON);
   <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
-	<h1 class="welcome">Spelling Bee</h1> 
+	<h1 class="welcome">Spelling Bee</h1>
   <div class="game">
     <div class="maingame">
         <form class="play">
@@ -128,7 +128,7 @@ $data = json_encode($puzzleJSON);
               var solutions = $data.solutions;
               var keyLetter = $data.keyLetter;
         var guessedWordList = $guessedWordList;
-        
+
               ");
       ?>
 
@@ -178,12 +178,12 @@ $data = json_encode($puzzleJSON);
      var total = 0;
      for(j = 0; j < guessedWordList.length; j++) {
 	var wordPoints = updateScore(guessedWordList[j]);
-	total += parseInt(score.textContent) + wordPoints;	
+	total += parseInt(score.textContent) + wordPoints;
 	}
      score.innerHTML = total;
 
-	
-		
+
+
 
 
       button0.onclick = function(){
@@ -214,7 +214,7 @@ $data = json_encode($puzzleJSON);
         validate(userGuess);
         userInput.value = "";
       }
-      
+
       cheatSubmitButton.onclick = function() {
         cheatInput.value = keyLetter + puzzleLetters;
       }
@@ -302,9 +302,10 @@ $data = json_encode($puzzleJSON);
         button6.innerHTML = puzzleLetters[5].toUpperCase();
       }
 
-      function reshuffle(puzzleLetters){
-        var shuffledLetters = puzzleLetters.split('').sort(function(){return  0.5-Math.random()}).join('');
+      function reshuffle(puzzle){
+        var shuffledLetters = puzzle.split('').sort(function(){return  0.5-Math.random()}).join('');
         makeHive(shuffledLetters);
+        puzzleLetters = shuffledLetters;
       }
 
     </script>
