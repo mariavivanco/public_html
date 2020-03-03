@@ -73,7 +73,7 @@ $data = json_encode($puzzleJSON);
     <div class="maingame">
         <p id="validation"></p>
           <label>
-              <input type="text" name="userinput" id="userinput" autocomplete="off" autofocus />
+              <input type="text" name="userinput" id="userinput" autocomplete="off" autofocus onkeypress="return /[a-zA-Z]/i.test(event.key)" />
           </label>
 
           <div class="wordsubmit">
@@ -232,11 +232,16 @@ $data = json_encode($puzzleJSON);
       }
 
       userInput.addEventListener("keyup", function(event) {
-        if (event.keyCode === 13) {
+	if (event.keyCode === 13) {
           event.preventDefault();
-          submitButton.click();
-        }
+	  submitButton.click();
+	}
+	if (event.keyCode === 32) {
+	  event.preventDefault();
+	  reshuffleButton.click();
+	}
       });
+
 
       cheatSubmitButton.onclick = function() {
         cheatInput.value = keyLetter + puzzleLetters;
