@@ -39,7 +39,6 @@
 
 #button1:active, #button2:active, #button3:active, #button4:active, #button5:active, #button6:active, #button0:active {
 transform: scale(.9);
-
 }
 
 .hb-md {
@@ -101,8 +100,28 @@ transform: scale(.9);
   outline:none;
   border:none;
   background-color: transparent;
+  font-family: Spartan;
+  color: #FFD700;
+  font-size: 2.5em;
+  text-align: center;
+  margin-left: -2.5em;
+  caret-color: black;
+  font-weight: bolder;
+  text-transform: uppercase;
 }
 
+#validation {
+  text-align: center;
+  margin-left: 0em;
+  padding: 0px;
+  margin-right: 0px;
+  background-color: white;
+  color: black;
+  max-height: 30px;
+  min-height: 30px;
+  width: 10em;
+  margin-left: 7em;
+}
 
 
 .listOfWords {
@@ -124,6 +143,7 @@ transform: scale(.9);
 .maingame {
 	flex-grow: 1;
   margin-left: 20em;
+  margin-top: 1em;
 }
 
 .rankbox {
@@ -172,7 +192,6 @@ transform: scale(.9);
 }
 
 .submitButton {
-	padding-left:10px;
 	margin-top: 5px;
     text-align: center;
 font-family: Spartan;
@@ -180,12 +199,13 @@ background-color: white;
 padding: 1em;
   border-radius: 40px;
 border-style: solid;
+visibility: hidden;
 
 }
 
 .cheatButton {
   padding-left:10px;
-	margin-top: 5px;
+	margin-top: 70px;
     text-align: center;
 font-family: Spartan;
 background-color: white;
@@ -195,10 +215,11 @@ padding: 1em;
 }
 
 .reshuffleButton {
-  margin-left:11.5em;
+  margin-left:8.5em;
 	margin-top: 5px;
     text-align: center;
 font-family: Spartan;
+font-size: 1.2em;
 background-color: white;
 padding: 1em;
   border-radius: 40px;
@@ -220,8 +241,17 @@ cursor:pointer;
   font-family: Caladea;
   font-size: 3.5em;
   font-weight: bold;
-  border-bottom: 1px solid black;
-  margin-bottom: 50px;
+  margin-bottom: 0em;
   padding-left: 1em;
-  padding-bottom: 0.5em;
+  padding-bottom: 0em;
+
+}
+
+#date {
+    border-bottom: 1px solid black;
+    font-family: Caladea;
+    font-size: 1em;
+      padding-bottom: 0.5em;
+      padding-left: 3.5em;
+      margin-bottom: 50px;
 }

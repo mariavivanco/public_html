@@ -83,6 +83,7 @@ $data = json_encode($puzzleJSON);
             <button id="button6"></button>
           </div>
         </div>
+        <p id="validation"></p>
         <form class="play">
           <label>
             <input type="text" name="userinput" id="userinput" />
@@ -91,7 +92,6 @@ $data = json_encode($puzzleJSON);
             <input type="button" value="Submit" id="SubmitButton"/>
           </div>
         </form>
-        <p id="validation"></p>
       </div>
       <div class="scoreandlist">
         <p>Score</p>

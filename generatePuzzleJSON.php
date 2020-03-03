@@ -57,6 +57,8 @@ $data = json_encode($puzzleJSON);
 <link rel="stylesheet" type="text/css" href="https://www.cssscript.com/demo/creating-hexagon-buttons-with-pure-css-css3/assets/css/hexagons.min.css">
 <link rel="stylesheet" type="text/css" href="index1.css">
 <link href="https://fonts.googleapis.com/css?family=Caladea|Playfair+Display|Spartan&display=swap" rel="stylesheet">
+<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
 
   <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="path/to/hexagons.min.js"></script>
@@ -65,18 +67,20 @@ $data = json_encode($puzzleJSON);
 <body>
 
 	<h1 class="welcome">Spelling Bee</h1>
+  <h2 id="date"></h2>
     <div class = "font">
   <div class="game">
     <div class="maingame">
-
+        <p id="validation"></p>
           <label>
-            <input type="text" name="userinput" id="userinput" autocomplete="off" />
+              <input type="text" name="userinput" id="userinput" autocomplete="off" autofocus />
           </label>
+
           <div class="wordsubmit">
             <input type="button" value="Submit" class = "submit submitButton" id="SubmitButton"/>
           </div>
 
-        <p id="validation"></p>
+
         <div class="beehive">
 	  <div class="row">
 	          <span id="button3" class = "hb hb-md"></span>
@@ -96,7 +100,7 @@ $data = json_encode($puzzleJSON);
             <br>
             <br>
         <div class = "submit" id = "reshuffle">
-	    <input type="submit" class = "reshuffleButton" id = "reshuffleButton" value="Reshuffle" name="submit"/>
+	    <button type="submit" class = "reshuffleButton" id = "reshuffleButton" name="submit"><i class='fas fa-sync-alt'></i></button>
 </a>
 
         </div>
@@ -164,9 +168,7 @@ $data = json_encode($puzzleJSON);
       var validation = document.getElementById("validation");
       var guessedWords = document.getElementById("guessedWords");
       var reshuffleButton = document.getElementById("reshuffleButton");
-      //          echo($_SESSION["guessedWordList"]);
-
-    //  console.log(guessedWordList);
+      var date = document.getElementById("date");
       var score = document.getElementById("points");
 
       var button0 = document.getElementById("button0");
@@ -180,6 +182,8 @@ $data = json_encode($puzzleJSON);
       button0.innerHTML = keyLetter.toUpperCase();
       makeHive(puzzleLetters);
 
+      date.innerHTML = new Date();
+
       // update the guessed word list with the data from the server
       var i;
       for(i = 0; i < guessedWordList.length; i++) {
@@ -192,13 +196,10 @@ $data = json_encode($puzzleJSON);
      var j;
      var total = 0;
      for(j = 0; j < guessedWordList.length; j++) {
-	var wordPoints = updateScore(guessedWordList[j]);
-	total += parseInt(score.textContent) + wordPoints;
-	}
+      	var wordPoints = updateScore(guessedWordList[j]);
+      	total += parseInt(score.textContent) + wordPoints;
+	   }
      score.innerHTML = total;
-
-
-
 
 
       button0.onclick = function(){
@@ -231,11 +232,8 @@ $data = json_encode($puzzleJSON);
       }
 
       userInput.addEventListener("keyup", function(event) {
-        // Number 13 is the "Enter" key on the keyboard
         if (event.keyCode === 13) {
-          // Cancel the default action, if needed
           event.preventDefault();
-          // Trigger the button element with a click
           submitButton.click();
         }
       });
@@ -327,6 +325,15 @@ $data = json_encode($puzzleJSON);
         makeHive(shuffledLetters);
       }
 
-    </script>
-  </body>
+      $(document).ready(function() {
+        document.homeform.input.focus();
+      });
+
+      userInput.onblur = function (event) {
+      var blurEl = this;
+      setTimeout(function() {
+          blurEl.focus()
+      }, 10);
+      }
+      </script>
 </html>
