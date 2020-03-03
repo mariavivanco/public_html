@@ -239,6 +239,11 @@ $data = json_encode($puzzleJSON);
 	if (event.keyCode === 32) {
 	  event.preventDefault();
 	  reshuffleButton.click();
+	  var orig = reshuffleButton.style.backgroundColor;
+	  reshuffleButton.style.backgroundColor = "#DCDCDC";
+   	   setTimeout(function(){
+              reshuffleButton.style.backgroundColor = orig;
+  	    }, 300);
 	}
       });
 
@@ -322,12 +327,15 @@ $data = json_encode($puzzleJSON);
         button3.innerHTML = puzzleLetters[2].toUpperCase();
         button4.innerHTML = puzzleLetters[3].toUpperCase();
         button5.innerHTML = puzzleLetters[4].toUpperCase();
-        button6.innerHTML = puzzleLetters[5].toUpperCase();
+	button6.innerHTML = puzzleLetters[5].toUpperCase();
       }
 
       function reshuffle(puzzleLetters){
-        var shuffledLetters = puzzleLetters.split('').sort(function(){return  0.5-Math.random()}).join('');
-        makeHive(shuffledLetters);
+	var shuffledLetters = puzzleLetters.split('').sort(function(){return  0.5-Math.random()}).join('');
+//	button0.style.opacity: 0;
+//	button0.style.transition: opacity 1s;
+	makeHive(shuffledLetters);
+//	button0.classList.toggle('fade');
       }
 
       $(document).ready(function() {
