@@ -331,9 +331,10 @@ $data = json_encode($puzzleJSON);
 	button6.innerHTML = puzzleLetters[5].toUpperCase();
       }
 
-      function reshuffle(puzzleLetters){
-      	var shuffledLetters = puzzleLetters.split('').sort(function(){return  0.5-Math.random()}).join('');
-      	makeHive(shuffledLetters);
+      function reshuffle(puzzle){
+        var shuffledLetters = puzzle.split('').sort(function(){return  0.5-Math.random()}).join('');
+        makeHive(shuffledLetters);
+        puzzleLetters = shuffledLetters;
       }
 
       $(document).ready(function() {
