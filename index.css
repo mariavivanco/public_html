@@ -8,20 +8,37 @@
     text-align: center;
 }
 
+#button3 {
+
+}
+
+.hb, .hb:after, .hb:before {
+    background-color: grey!important;
+    border-left: 1px solid red;
+    border-right: 1px solid red;
+    color: white;
+		transform: rotate(20deg);
+}
+
+.hb-custom, .hb-custom:after, .hb-custom:before {
+    background: #f0f8ff!important;
+    color: #f0f8ff!important;
+    border-left: 1px solid #f39c12!important;
+    border-right: 1px solid #f39c12!important;
+}
+
 .container {
     position: absolute;
-    margin-top: 30px;
-    
+    margin-top: 10px;
+		margin: 0px;
 }
+
 .row {
-  margin-bottom: 45px;
+  margin-bottom: 0px;
   text-align: center;
 }
 
-.container .row button {
-  margin: 0 20px;
 
-}
 
 .buttons {
 	 display: inline;
@@ -106,7 +123,7 @@
 	padding-left:10px;
 	margin-top: 5px;
     text-align: center;
-	
+
 }
 
 .welcome {
