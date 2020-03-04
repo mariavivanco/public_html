@@ -58,6 +58,8 @@ $data = json_encode($puzzleJSON);
 <link rel="stylesheet" type="text/css" href="index1.css">
 <link href="https://fonts.googleapis.com/css?family=Caladea|Playfair+Display|Spartan&display=swap" rel="stylesheet">
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+<link rel="icon" href="favicon.ico">
+<title>Bryn Mawr Bee Player</title>
 
 
   <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -73,7 +75,7 @@ $data = json_encode($puzzleJSON);
     <div class="maingame">
         <p id="validation"></p>
           <label>
-              <input type="text" name="userinput" id="userinput" autocomplete="off" autofocus onkeypress="return /[a-zA-Z]/i.test(event.key)" />
+              <input type="text" name="userinput" id="userinput" autocomplete="off" autofocus onkeypress="return /[a-zA-Z]/i.test(event.key)" spellcheck="false" />
           </label>
 
           <div class="wordsubmit">
@@ -112,7 +114,7 @@ $data = json_encode($puzzleJSON);
 			<div class="rank">
 			<p>Rank</p>
 				<div class="rankbox">
-					<p id="rank">amazing</p>
+					<p id="rank"></p>
 				</div>
 			</div>
 			<div class="score">
@@ -128,7 +130,7 @@ $data = json_encode($puzzleJSON);
 			  <ul id="guessedWords" class="listOfWords"></ul>
 			</div>
 		</div>
-		<form action="cheat.php" method="post">
+		<form action="cheat.php" method="post" target="_blank">
 			<div class="submit" id = "cheatSubmit">
 			  <input type="hidden" name="cheatLetters" id="cheatInput" />
 			  <input type="submit" value="Give me the answers!" class = "cheatButton" name="submit"/>
@@ -170,6 +172,7 @@ $data = json_encode($puzzleJSON);
       var reshuffleButton = document.getElementById("reshuffleButton");
       var date = document.getElementById("date");
       var score = document.getElementById("points");
+      var rank = document.getElementById("rank");
 
       var button0 = document.getElementById("button0");
       var button1 = document.getElementById("button1");
@@ -181,7 +184,7 @@ $data = json_encode($puzzleJSON);
 
       button0.innerHTML = keyLetter.toUpperCase();
       makeHive(puzzleLetters);
-
+      var maxScore = getMaxScore(solutions);
       date.innerHTML = new Date();
 
       // update the guessed word list with the data from the server
@@ -200,14 +203,15 @@ $data = json_encode($puzzleJSON);
       	total += parseInt(score.textContent) + wordPoints;
 	   }
      score.innerHTML = total;
+     rank.innerHTML = calculateRanking(total);
 
 
+      //hive
       button0.onclick = function(){
         userInput.value = userInput.value + keyLetter.toUpperCase();
        }
       button1.onclick = function(){
 	      userInput.value = userInput.value + puzzleLetters[0].toUpperCase();
-	      alert("pressed: " + puzzleLetters[0].toUpperCase());
       }
       button2.onclick = function(){
          userInput.value = userInput.value + puzzleLetters[1].toUpperCase();
@@ -275,18 +279,22 @@ $data = json_encode($puzzleJSON);
         else if (guessedWordList.includes(userGuess)){
           validation.innerHTML = "Already guessed. ";
         }
-        else {
+        else { // valid guess
           validation.innerHTML = "Valid guess!";
           guessedWordList.push(userGuess);
-                console.log(guessedWordList);
+          console.log(guessedWordList);
           console.log(guessedWordList.includes(userGuess));
-        var li = document.createElement("li");
-                li.appendChild(document.createTextNode(userGuess));
-                guessedWords.appendChild(li);
-                var turnPoints = updateScore(userGuess);
+          var li = document.createElement("li");
+          li.appendChild(document.createTextNode(userGuess));
+          guessedWords.appendChild(li);
+          var turnPoints = updateScore(userGuess);
           console.log(turnPoints);
-                var totalPoints = parseInt(score.textContent) + turnPoints;
-                score.innerHTML = totalPoints;
+          var totalPoints = parseInt(score.textContent) + turnPoints;
+          score.innerHTML = totalPoints;
+          rank.innerHTML = calculateRanking(totalPoints);
+          console.log("ranking" + calculateRanking(totalPoints));
+          console.log("points" + totalPoints);
+          //ranking = getRanking(userGuess);
                 //var totalPoints = parseInt(score.textContent) + turnPoints;
                 // have javascript send http (a form that has the word list)
           // update the list of guessed words on the server
@@ -307,11 +315,47 @@ $data = json_encode($puzzleJSON);
         return true;
       }
 
+      function calculateRanking(totalPoints){
+          var ten = maxScore * 0.1;
+          var twenty = maxScore * 0.2;
+          var thirty = maxScore * 0.3;
+          var fourty = maxScore * 0.4;
+          var fifty = maxScore * 0.5;
+          var sixty = maxScore * 0.6;
+          var seventy = maxScore * 0.7;
+          var eighty = maxScore * 0.8;
+          if ((0 <= totalPoints) && (totalPoints < ten)){
+            return "Beginner";
+          } else if ((ten <= totalPoints) && (totalPoints < twenty)){
+              return "Good Start";
+          } else if ((twenty <= totalPoints) &&  (totalPoints < thirty)){
+            return "Moving Up";
+          } else if ((thirty <= totalPoints) && (totalPoints < fourty)){
+            return "Good";
+          } else if ((fourty <= totalPoints) && (totalPoints < fifty)){
+            return "Solid";
+          } else if ((fifty <= totalPoints ) && (totalPoints < sixty)) {
+            return "Nice";
+          } else if ((sixty <= totalPoints) && (totalPoints < seventy)){
+            return "Great";
+          } else if ((seventy <= totalPoints) && (totalPoints < eighty)){
+            return "Amazing";
+          } else if (totalPoints >= eighty){
+            return "Genius";
+          }
+      }
+      function getMaxScore(solutions){
+        var i;
+        var maxScore = 0;
+        for(i = 0; i < solutions.length; i++) {
+          maxScore += updateScore(solutions[i]);
+        }
+        return maxScore;
+      }
       function updateScore(userGuess) {
         var points = 0;
         if(userGuess.length === 4){
           points = 1;
-          console.log("HI");
           console.log(points);
         }
         else if(userGuess.length > 4){
@@ -336,10 +380,6 @@ $data = json_encode($puzzleJSON);
         makeHive(shuffledLetters);
         puzzleLetters = shuffledLetters;
       }
-
-      $(document).ready(function() {
-        document.homeform.input.focus();
-      });
 
       userInput.onblur = function (event) {
       var blurEl = this;
