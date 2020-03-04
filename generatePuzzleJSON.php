@@ -206,7 +206,8 @@ $data = json_encode($puzzleJSON);
         userInput.value = userInput.value + keyLetter.toUpperCase();
        }
       button1.onclick = function(){
-         userInput.value = userInput.value + puzzleLetters[0].toUpperCase();
+	      userInput.value = userInput.value + puzzleLetters[0].toUpperCase();
+	      alert("pressed: " + puzzleLetters[0].toUpperCase());
       }
       button2.onclick = function(){
          userInput.value = userInput.value + puzzleLetters[1].toUpperCase();
@@ -331,11 +332,8 @@ $data = json_encode($puzzleJSON);
       }
 
       function reshuffle(puzzleLetters){
-	var shuffledLetters = puzzleLetters.split('').sort(function(){return  0.5-Math.random()}).join('');
-//	button0.style.opacity: 0;
-//	button0.style.transition: opacity 1s;
-	makeHive(shuffledLetters);
-//	button0.classList.toggle('fade');
+      	var shuffledLetters = puzzleLetters.split('').sort(function(){return  0.5-Math.random()}).join('');
+      	makeHive(shuffledLetters);
       }
 
       $(document).ready(function() {
