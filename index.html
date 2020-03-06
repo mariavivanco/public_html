@@ -1,34 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="index.css">
+  <link rel="stylesheet" type="text/css" href="landingPage.css">
+  <link href="https://fonts.googleapis.com/css?family=Caladea|Playfair+Display|Spartan&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.ico">
+  <title>Welcome to Bryn Mawr Bee!</title>
 </head>
 <body>
 
   <div class="game">
-    <div class="maingame">
       <h1 class="welcome"> Welcome to Spelling Bee!</h1>
-      <p class="rules">
-        Rules: Create words using letters from the hive.</p>
-        <ul>
-          <li> Words must contain at least 4 letters.</li>
-          <li> Words must include the key letter.</li>
-          <li> Our word list does not include words that are obscure, hyphenated, or proper nouns.</li>
-          <li> No cussing either, sorry. </li>
-          <li> Letters can be used more than once.</li>
-          <li> To quit, input 'please quit'.</li>
-        </ul>
-
+      <div class = "explanation">
         <p class="rules">
-          Score points to increase your rating.
-        </p>
-        <ul>
-          <li> 4-letter words are worth 1 point each. </li>
-          <li> Longer words earn 1 point per letter.</li>
-          <li> Each puzzle includes at least one “pangram” which uses every letter. These are worth 7 extra points!</li>
-        </ul>
+          Rules: Create words using letters from the hive.</p>
+          <ul>
+            <li> Words must contain at least 4 letters.</li>
+            <li> Words must include the key letter.</li>
+            <li> Our word list does not include words that are obscure, hyphenated, or proper nouns.</li>
+            <li> No cussing either, sorry. </li>
+            <li> Letters can be used more than once.</li>
+          </ul>
+
+          <p class="rules">
+            Score points to increase your rating.
+          </p>
+          <ul>
+            <li> 4-letter words are worth 1 point each. </li>
+            <li> Longer words earn 1 point per letter.</li>
+            <li> Each puzzle includes at least one 'pangram' which uses every letter. <br>These are worth 7 extra points!</li>
+          </ul>
+      </div>
+      <div class = "enterButton">
         <form id = "puzzleForm" action="generatePuzzleJSON.php" method="post">
-          <input id="myButton" type="submit" value="Let's Play!" name="submit"/>
+          <input id="myButton" class = "startButton" type="submit" value="Let's Play!" name="submit"/>
         </form>
+      </div>
+    </div>
+
   </body>
 </html>

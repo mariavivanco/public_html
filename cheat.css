@@ -1,0 +1,27 @@
+.title {
+  	text-align: center;
+    font-family: Caladea;
+    font-size: 3.5em;
+    font-weight: bold;
+    margin-bottom: 0em;
+    padding-bottom: 0em;
+}
+
+.all {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.answers {
+  font-family: Spartan;
+  border: 1px solid;
+  border-radius: 10px;
+  width: 25%;
+  align-self: center;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top:2em;
+  padding-bottom:2em;
+  margin-top:2em;
+}

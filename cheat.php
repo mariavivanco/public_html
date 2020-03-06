@@ -11,13 +11,27 @@ fwrite($fp, $answers);
 fclose($fp);
 
 $file = fopen("answers.txt", "r");
-echo "<html><body>";
-echo "<h1>Puzzle Answers for '" . $data1 . "': </h1>";
+echo "
+
+<html>
+<head>
+  <link rel=\"icon\" href=\"favicon.ico\">
+  <title>Bryn Mawr Bee Answers</title>
+  <link rel=\"stylesheet\" type=\"text/css\" href=\"cheat.css\">
+  <link href=\"https://fonts.googleapis.com/css?family=Caladea|Playfair+Display|Spartan&display=swap\" rel=\"stylesheet\">
+</head>
+<body>
+  <div class=\"all\">
+    <h1 class = \"title\">Puzzle Answers for '" . $data1 . "': </h1>
+    <div class=\"answers\">
+
+";
 while(! feof($file))
 {
   $var =  fgets($file);
   echo($var);
   echo("<br>");
 }
+echo "</div></div></body></html>";
 
 ?>
