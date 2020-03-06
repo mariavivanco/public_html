@@ -1,7 +1,9 @@
+// create the database to be used in the application. only needs to be run 1 time.
+
 <?php
 $servername = "localhost";
-$username = "username";
-$password = "password";
+$username = "goddard";
+$password = "030620";
 
 // Create connection
 $conn = mysqli_connect($servername, $username, $password);
@@ -11,7 +13,7 @@ if (!$conn) {
 }
 
 // Create database
-$sql = "CREATE DATABASE myDB";
+$sql = "CREATE DATABASE userInfoSB";
 if (mysqli_query($conn, $sql)) {
     echo "Database created successfully";
 } else {
