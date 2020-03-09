@@ -84,12 +84,34 @@ transform: scale(.9);
 	padding-left:10px;
 }
 
-
-
 .game {
 	padding-left:10px;
 	display: flex;
 	justify-content: space-around;
+}
+
+.gameInfo {
+	display: flex;
+	border-bottom: 1px solid black;
+	justify-content: space-between;
+	padding-left: 3%;
+	padding-right: 3%;
+}
+
+#date {
+    font-family: Caladea;
+    font-size: 1em;
+		align-self:flex-start;
+}
+
+#login {
+	font-family: Caladea;
+	font-size: 1em;
+}
+
+#loginContainer {
+	font-family: Caladea;
+	font-size: 1em;
 }
 
 .letsplay {
@@ -249,11 +271,25 @@ cursor:pointer;
 
 }
 
-#date {
-    border-bottom: 1px solid black;
-    font-family: Caladea;
-    font-size: 1em;
-      padding-bottom: 0.5em;
-      padding-left: 3.5em;
-      margin-bottom: 50px;
+.logoutButton {
+  align-self: center;
+  font-family: Spartan;
+  font-size: 0.7em;
+  background-color: #FFD700;
+  padding: 1em;
+  border-radius: 40px;
+  border-style: solid;
+  border: 1px solid black;
+	margin: 0.5em;
+	margin-left: 2em;
+}
+
+.logoutButton:active {
+background-color: #DCDCDC;
+
+}
+
+.logoutButton:hover {
+cursor:pointer;
+
 }

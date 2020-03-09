@@ -10,6 +10,7 @@ $fp=fopen('puzzleData.txt', 'r') or die ("UNABLE TO OPEN FILE!");
 $arrayOfPuzzles = explode("#", fread($fp, filesize('puzzleData.txt')));
 $arrayOfPuzzles = array_slice($arrayOfPuzzles, 1);
 
+// PUZZLE
 if(array_key_exists("puzzle", $_SESSION)) {
   $randomPuzzleString = $_SESSION["puzzle"];
 }
@@ -18,6 +19,9 @@ else {
   $randomPuzzleString = $arrayOfPuzzles[array_rand($arrayOfPuzzles)];
 }
 
+$_SESSION["puzzle"] = $randomPuzzleString;
+
+// GUESSED WORD LIST
 if(array_key_exists("guessedWordList", $_SESSION)) {
   $guessedWordList = $_SESSION["guessedWordList"];
 }
@@ -25,13 +29,21 @@ else {
   $guessedWordList = [];
 }
 
-$_SESSION["puzzle"] = $randomPuzzleString;
-
 if(isset($_REQUEST["guessedWordList"]) && $_REQUEST["guessedWordList"] != "") {
 	$guessedWordList = $_REQUEST["guessedWordList"];
 }
 
 $_SESSION["guessedWordList"] = $guessedWordList;
+
+// USERNAME
+if(array_key_exists("username", $_SESSION)) {
+  $username = $_SESSION["username"];
+}
+else {
+  $username = "";
+}
+
+$_SESSION["username"] = $username;
 
 #split the array into each piece (each element is either the puzzle letters or the answers)
 $randomPuzzleArray = explode("\n", $randomPuzzleString);
@@ -46,6 +58,9 @@ fwrite($jsonObjFile, json_encode($puzzleJSON));
 fclose($jsonObjFile);
 
 $data = json_encode($puzzleJSON);
+// set the entire json object of the puzzle in the session
+$_SESSION["jsonPuzzle"] = $data;
+$username = json_encode($username);
 
 ?>
 
@@ -69,7 +84,21 @@ $data = json_encode($puzzleJSON);
 <body>
 
 	<h1 class="welcome">Spelling Bee</h1>
-  <h2 id="date"></h2>
+  <div class = "gameInfo">
+    <div class = "dateInfo">
+      <h2 id="date"></h2>
+    </div>
+    <div class = "loginInfo">
+      <h2 id = "loginContainer">Welcome, <span id = "login"></span>!</h2>
+      <div class = "signoutbutton">
+        <form id = "puzzleForm" action="logout.php" method="post">
+          <input id="myButton" class = "logoutButton" type="submit" value="Log Out" name="submit"/>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
     <div class = "font">
   <div class="game">
     <div class="maingame">
@@ -143,13 +172,14 @@ $data = json_encode($puzzleJSON);
 
     <script>
       <?php
-              $guessedWordList = json_encode($guessedWordList);
+            $guessedWordList = json_encode($guessedWordList);
+
             echo("
               var puzzleLetters = $data.puzzleLetters;
               var solutions = $data.solutions;
               var keyLetter = $data.keyLetter;
-        var guessedWordList = $guessedWordList;
-
+              var guessedWordList = $guessedWordList;
+              var username = $username;
               ");
       ?>
 
@@ -173,6 +203,7 @@ $data = json_encode($puzzleJSON);
       var date = document.getElementById("date");
       var score = document.getElementById("points");
       var rank = document.getElementById("rank");
+      var login = document.getElementById("login");
 
       var button0 = document.getElementById("button0");
       var button1 = document.getElementById("button1");
@@ -182,10 +213,12 @@ $data = json_encode($puzzleJSON);
       var button5 = document.getElementById("button5");
       var button6 = document.getElementById("button6");
 
+
       button0.innerHTML = keyLetter.toUpperCase();
       makeHive(puzzleLetters);
       var maxScore = getMaxScore(solutions);
       date.innerHTML = new Date();
+      login.innerHTML = username;
 
       // update the guessed word list with the data from the server
       var i;
