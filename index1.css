@@ -271,7 +271,7 @@ cursor:pointer;
 
 }
 
-.logoutButton {
+.logoutButton, .newPuzzleButton {
   align-self: center;
   font-family: Spartan;
   font-size: 0.7em;
@@ -284,12 +284,15 @@ cursor:pointer;
 	margin-left: 2em;
 }
 
-.logoutButton:active {
+.newPuzzleButton {
+	margin-left: 0em;
+}
+
+.logoutButton:active, .newPuzzleButton:active {
 background-color: #DCDCDC;
 
 }
 
-.logoutButton:hover {
+.logoutButton:hover, .newPuzzleButton:hover {
 cursor:pointer;
-
 }

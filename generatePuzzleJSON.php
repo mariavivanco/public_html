@@ -11,7 +11,7 @@ $arrayOfPuzzles = explode("#", fread($fp, filesize('puzzleData.txt')));
 $arrayOfPuzzles = array_slice($arrayOfPuzzles, 1);
 
 // PUZZLE
-if(array_key_exists("puzzle", $_SESSION) && ($_SESSION["puzzle"] !== NULL)) {
+if(array_key_exists("puzzle", $_SESSION) && ($_SESSION["puzzle"] !== NULL) && !(isset($_REQUEST["newPuzzle"]))) {
   $randomPuzzleString = $_SESSION["puzzle"];
 }
 else {
@@ -22,7 +22,7 @@ else {
 $_SESSION["puzzle"] = $randomPuzzleString;
 
 // GUESSED WORD LIST
-if(array_key_exists("guessedWordList", $_SESSION) && ($_SESSION["guessedWordList"] !== NULL)) {
+if(array_key_exists("guessedWordList", $_SESSION) && ($_SESSION["guessedWordList"] !== NULL) && !(isset($_REQUEST["newPuzzle"]))) {
   $guessedWordList = $_SESSION["guessedWordList"];
 }
 else {
@@ -82,13 +82,21 @@ $username = json_encode($username);
   <div class = "gameInfo">
     <div class = "dateInfo">
       <h2 id="date"></h2>
+      <form action="", method="post">
+        <input type="submit" value="New Puzzle" class = "newPuzzleButton" id="newPuzzleButton"/>
+      </form>
+
     </div>
     <div class = "loginInfo">
       <h2 id = "loginContainer">Welcome, <span id = "login"></span>!</h2>
+
+
+
       <div class = "signoutbutton">
         <form id = "puzzleForm" action="logout.php" method="post">
           <input id="myButton" class = "logoutButton" type="submit" value="Log Out" name="submit"/>
         </form>
+        </div>
       </div>
     </div>
   </div>
@@ -191,6 +199,7 @@ $username = json_encode($username);
       puzzleLetters = puzzleLetters.replace(keyLetter, "")
       var userInput = document.getElementById("userinput");
       var submitButton = document.getElementById("SubmitButton");
+      var newPuzzleButton = document.getElementById("newPuzzleButton")
       var cheatSubmitButton = document.getElementById("cheatSubmit");
       var cheatInput = document.getElementById("cheatInput");
       var validation = document.getElementById("validation");
@@ -265,21 +274,33 @@ $username = json_encode($username);
         userInput.value = "";
       }
 
+      newPuzzleButton.onclick = function() {
+        generateNewPuzzle();
+      }
+
+      function generateNewPuzzle() {
+        // submit http request for a new puzzle
+        var xmlHttp = new XMLHttpRequest();
+        var newPuzzle = true;
+        xmlHttp.open("GET", "generatePuzzleJSON.php?newPuzzle=" + newPuzzle, true);
+        xmlHttp.send();
+      }
+
       userInput.addEventListener("keyup", function(event) {
-	if (event.keyCode === 13) {
-          event.preventDefault();
-	  submitButton.click();
-	}
-	if (event.keyCode === 32) {
-	  event.preventDefault();
-	  reshuffleButton.click();
-	  var orig = reshuffleButton.style.backgroundColor;
-	  reshuffleButton.style.backgroundColor = "#DCDCDC";
-   	   setTimeout(function(){
-              reshuffleButton.style.backgroundColor = orig;
-  	    }, 300);
-	}
-      });
+        	if (event.keyCode === 13) {
+                  event.preventDefault();
+        	  submitButton.click();
+        	}
+        	if (event.keyCode === 32) {
+        	  event.preventDefault();
+        	  reshuffleButton.click();
+        	  var orig = reshuffleButton.style.backgroundColor;
+        	  reshuffleButton.style.backgroundColor = "#DCDCDC";
+           	   setTimeout(function(){
+                      reshuffleButton.style.backgroundColor = orig;
+          	    }, 300);
+        	}
+              });
 
 
       cheatSubmitButton.onclick = function() {
