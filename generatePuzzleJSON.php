@@ -11,7 +11,7 @@ $arrayOfPuzzles = explode("#", fread($fp, filesize('puzzleData.txt')));
 $arrayOfPuzzles = array_slice($arrayOfPuzzles, 1);
 
 // PUZZLE
-if(array_key_exists("puzzle", $_SESSION)) {
+if(array_key_exists("puzzle", $_SESSION) && ($_SESSION["puzzle"] !== NULL)) {
   $randomPuzzleString = $_SESSION["puzzle"];
 }
 else {
@@ -22,14 +22,14 @@ else {
 $_SESSION["puzzle"] = $randomPuzzleString;
 
 // GUESSED WORD LIST
-if(array_key_exists("guessedWordList", $_SESSION)) {
+if(array_key_exists("guessedWordList", $_SESSION) && ($_SESSION["guessedWordList"] !== NULL)) {
   $guessedWordList = $_SESSION["guessedWordList"];
 }
 else {
   $guessedWordList = [];
 }
 
-if(isset($_REQUEST["guessedWordList"]) && $_REQUEST["guessedWordList"] != "") {
+if(isset($_REQUEST["guessedWordList"]) && $_REQUEST["guessedWordList"] !== "") {
 	$guessedWordList = $_REQUEST["guessedWordList"];
 }
 
@@ -50,16 +50,11 @@ $randomPuzzleArray = explode("\n", $randomPuzzleString);
 # remove the first and last elements of the array
 $randomPuzzleArray = array_slice($randomPuzzleArray, 1,-1);
 
-# write this to a file as a JSON object
-$jsonObjFile = fopen('puzzleJSON.json', 'w');
+# setup the json object of the puzzle
 $puzzleSolutions = array_slice($randomPuzzleArray, 2);
 $puzzleJSON = array('puzzleLetters' => $randomPuzzleArray[0], 'keyLetter' => $randomPuzzleArray[1], 'solutions' => $puzzleSolutions);
-fwrite($jsonObjFile, json_encode($puzzleJSON));
-fclose($jsonObjFile);
 
 $data = json_encode($puzzleJSON);
-// set the entire json object of the puzzle in the session
-$_SESSION["jsonPuzzle"] = $data;
 $username = json_encode($username);
 
 ?>
@@ -182,6 +177,7 @@ $username = json_encode($username);
               var username = $username;
               ");
       ?>
+
 
 	if(typeof guessedWordList === 'string') {
 		guessedWordList = guessedWordList.split(",");
@@ -327,11 +323,9 @@ $username = json_encode($username);
           rank.innerHTML = calculateRanking(totalPoints);
           console.log("ranking" + calculateRanking(totalPoints));
           console.log("points" + totalPoints);
-          //ranking = getRanking(userGuess);
-                //var totalPoints = parseInt(score.textContent) + turnPoints;
-                // have javascript send http (a form that has the word list)
-          // update the list of guessed words on the server
 
+        // have javascript send http (a form that has the word list)
+        // update the list of guessed words on the server
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", "generatePuzzleJSON.php?guessedWordList=" + guessedWordList, true);
         xmlHttp.send();

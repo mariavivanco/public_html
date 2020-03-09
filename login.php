@@ -17,7 +17,8 @@ $username = "";
 $password = "";
 $invalid_username = "";
 $invalid_password = "";
-$puzzle = [];
+$puzzle = "";
+$guessedAnswers = [];
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -68,8 +69,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["loggedin"] = true;
                             $_SESSION["id"] = $id;
                             $_SESSION["username"] = $username;
-                            $_SESSION["currentPuzzle"] = unserialize($puzzle);
-                            $_SESSION["guessedAnswers"] = unserialize($guessedAnswers);
+                            $_SESSION["puzzle"] = $puzzle;
+                            if($guessedAnswers == NULL) {
+                              $_SESSION["guessedWordList"] = [];
+                            }
+                            else {
+                              $_SESSION["guessedWordList"] = unserialize($guessedAnswers);
+                            }
 
                             // Redirect user to game page
                             header("location: generatePuzzleJSON.php");

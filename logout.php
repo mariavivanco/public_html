@@ -13,51 +13,59 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 
-if(isset($_SESSION["jsonPuzzle"])) {
-    $puzzle = $_SESSION["jsonPuzzle"];
-}
-else {
-  echo "Oops! Something went wrong. Please try again later.";
-}
-
-if(isset($_SESSION["guessedWords"])) {
-  $guessedWords = $_SESSION["guessedWords"];
-}
-else {
-  $guessedWords = [];
-}
+$puzzle = $_SESSION["puzzle"];
+$guessedAnswers = $_SESSION["guessedWordList"];
 
 // UPDATE PUZZLE
 // Prepare an update statement
-$sql = "UPDATE users SET currentPuzzle = ? WHERE id = ?";
+$sql = "UPDATE users SET puzzle = ? WHERE id = ?";
 
 if($stmt = $mysqli->prepare($sql)){
     // Bind variables to the prepared statement as parameters
-    $stmt->bind_param("ss", $param_puzzle, $param_id);
+    $stmt->bind_param("si", $param_puzzle, $param_id);
 
     // Set parameters
-    $param_puzzle = serialize($puzzle);
+    $param_puzzle = $puzzle;
     $param_id = $_SESSION["id"];
 
     // Attempt to execute the prepared statement
     if($stmt->execute()){
-        // Password updated successfully. Destroy the session, and redirect to login page
+        // Puzzle updated successfully. Do nothing.
+    } else{
+        echo "Oops! Something went wrong. Please try again later.";
+    }
+
+    // Close statement
+    $stmt->close();
+}
+
+// UPDATE GUESSED ANSWERS
+// Prepare an update statement
+$sql = "UPDATE users SET guessedAnswers = ? WHERE id = ?";
+
+if($stmt = $mysqli->prepare($sql)){
+    // Bind variables to the prepared statement as parameters
+    $stmt->bind_param("si", $param_guessedAnswers, $param_id);
+
+    // Set parameters
+    $param_guessedAnswers = serialize($guessedAnswers);
+    $param_id = $_SESSION["id"];
+
+    // Attempt to execute the prepared statement
+    if($stmt->execute()){
+        // Guessed answers updated successfully. Destroy the session, and redirect to landing page
         session_destroy();
-        header("location: login.php");
+        header("location: index.html");
         exit();
     } else{
         echo "Oops! Something went wrong. Please try again later.";
     }
 
+    // Close statement
+    $stmt->close();
+}
 
 
-// Unset all of the session variables
-$_SESSION = array();
-
-// Destroy the session.
-session_destroy();
-
-// Redirect to login page
-header("location: index.html");
-exit;
+// Close connection
+$mysqli->close();
 ?>
