@@ -364,9 +364,9 @@ $username = json_encode($username);
       }
 
       function calculateRanking(totalPoints){
-          var ten = maxScore * 0.1;
-          var twenty = maxScore * 0.2;
-          var thirty = maxScore * 0.3;
+          var ten = maxScore * 0.05;
+          var twenty = maxScore * 0.1;
+          var thirty = maxScore * 0.2;
           var fourty = maxScore * 0.4;
           var fifty = maxScore * 0.5;
           var sixty = maxScore * 0.6;
