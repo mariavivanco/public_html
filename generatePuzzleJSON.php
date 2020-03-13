@@ -10,7 +10,8 @@ $fp=fopen('puzzleData.txt', 'r') or die ("UNABLE TO OPEN FILE!");
 $arrayOfPuzzles = explode("#", fread($fp, filesize('puzzleData.txt')));
 $arrayOfPuzzles = array_slice($arrayOfPuzzles, 1);
 
-if(array_key_exists("puzzle", $_SESSION)) {
+// PUZZLE
+if(array_key_exists("puzzle", $_SESSION) && ($_SESSION["puzzle"] !== NULL) && !(isset($_REQUEST["newPuzzle"]))) {
   $randomPuzzleString = $_SESSION["puzzle"];
 }
 else {
@@ -18,34 +19,43 @@ else {
   $randomPuzzleString = $arrayOfPuzzles[array_rand($arrayOfPuzzles)];
 }
 
-if(array_key_exists("guessedWordList", $_SESSION)) {
+$_SESSION["puzzle"] = $randomPuzzleString;
+
+// GUESSED WORD LIST
+if(array_key_exists("guessedWordList", $_SESSION) && ($_SESSION["guessedWordList"] !== NULL) && !(isset($_REQUEST["newPuzzle"]))) {
   $guessedWordList = $_SESSION["guessedWordList"];
 }
 else {
   $guessedWordList = [];
 }
 
-$_SESSION["puzzle"] = $randomPuzzleString;
-
-if(isset($_REQUEST["guessedWordList"]) && $_REQUEST["guessedWordList"] != "") {
+if(isset($_REQUEST["guessedWordList"]) && $_REQUEST["guessedWordList"] !== "") {
 	$guessedWordList = $_REQUEST["guessedWordList"];
 }
 
 $_SESSION["guessedWordList"] = $guessedWordList;
+
+// USERNAME
+if(array_key_exists("username", $_SESSION)) {
+  $username = $_SESSION["username"];
+}
+else {
+  $username = "";
+}
+
+$_SESSION["username"] = $username;
 
 #split the array into each piece (each element is either the puzzle letters or the answers)
 $randomPuzzleArray = explode("\n", $randomPuzzleString);
 # remove the first and last elements of the array
 $randomPuzzleArray = array_slice($randomPuzzleArray, 1,-1);
 
-# write this to a file as a JSON object
-$jsonObjFile = fopen('puzzleJSON.json', 'w');
+# setup the json object of the puzzle
 $puzzleSolutions = array_slice($randomPuzzleArray, 2);
 $puzzleJSON = array('puzzleLetters' => $randomPuzzleArray[0], 'keyLetter' => $randomPuzzleArray[1], 'solutions' => $puzzleSolutions);
-fwrite($jsonObjFile, json_encode($puzzleJSON));
-fclose($jsonObjFile);
 
 $data = json_encode($puzzleJSON);
+$username = json_encode($username);
 
 ?>
 
@@ -69,7 +79,29 @@ $data = json_encode($puzzleJSON);
 <body>
 
 	<h1 class="welcome">Spelling Bee</h1>
-  <h2 id="date"></h2>
+  <div class = "gameInfo">
+    <div class = "dateInfo">
+      <h2 id="date"></h2>
+      <form action="", method="post">
+        <input type="submit" value="New Puzzle" class = "newPuzzleButton" id="newPuzzleButton"/>
+      </form>
+
+    </div>
+    <div class = "loginInfo">
+      <h2 id = "loginContainer">Welcome, <span id = "login"></span>!</h2>
+
+
+
+      <div class = "signoutbutton">
+        <form id = "puzzleForm" action="logout.php" method="post">
+          <input id="myButton" class = "logoutButton" type="submit" value="Log Out" name="submit"/>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
     <div class = "font">
   <div class="game">
     <div class="maingame">
@@ -143,15 +175,17 @@ $data = json_encode($puzzleJSON);
 
     <script>
       <?php
-              $guessedWordList = json_encode($guessedWordList);
+            $guessedWordList = json_encode($guessedWordList);
+
             echo("
               var puzzleLetters = $data.puzzleLetters;
               var solutions = $data.solutions;
               var keyLetter = $data.keyLetter;
-        var guessedWordList = $guessedWordList;
-
+              var guessedWordList = $guessedWordList;
+              var username = $username;
               ");
       ?>
+
 
 	if(typeof guessedWordList === 'string') {
 		guessedWordList = guessedWordList.split(",");
@@ -165,6 +199,7 @@ $data = json_encode($puzzleJSON);
       puzzleLetters = puzzleLetters.replace(keyLetter, "")
       var userInput = document.getElementById("userinput");
       var submitButton = document.getElementById("SubmitButton");
+      var newPuzzleButton = document.getElementById("newPuzzleButton")
       var cheatSubmitButton = document.getElementById("cheatSubmit");
       var cheatInput = document.getElementById("cheatInput");
       var validation = document.getElementById("validation");
@@ -173,6 +208,7 @@ $data = json_encode($puzzleJSON);
       var date = document.getElementById("date");
       var score = document.getElementById("points");
       var rank = document.getElementById("rank");
+      var login = document.getElementById("login");
 
       var button0 = document.getElementById("button0");
       var button1 = document.getElementById("button1");
@@ -182,10 +218,12 @@ $data = json_encode($puzzleJSON);
       var button5 = document.getElementById("button5");
       var button6 = document.getElementById("button6");
 
+
       button0.innerHTML = keyLetter.toUpperCase();
       makeHive(puzzleLetters);
       var maxScore = getMaxScore(solutions);
       date.innerHTML = new Date();
+      login.innerHTML = username;
 
       // update the guessed word list with the data from the server
       var i;
@@ -236,21 +274,33 @@ $data = json_encode($puzzleJSON);
         userInput.value = "";
       }
 
+      newPuzzleButton.onclick = function() {
+        generateNewPuzzle();
+      }
+
+      function generateNewPuzzle() {
+        // submit http request for a new puzzle
+        var xmlHttp = new XMLHttpRequest();
+        var newPuzzle = true;
+        xmlHttp.open("GET", "generatePuzzleJSON.php?newPuzzle=" + newPuzzle, true);
+        xmlHttp.send();
+      }
+
       userInput.addEventListener("keyup", function(event) {
-	if (event.keyCode === 13) {
-          event.preventDefault();
-	  submitButton.click();
-	}
-	if (event.keyCode === 32) {
-	  event.preventDefault();
-	  reshuffleButton.click();
-	  var orig = reshuffleButton.style.backgroundColor;
-	  reshuffleButton.style.backgroundColor = "#DCDCDC";
-   	   setTimeout(function(){
-              reshuffleButton.style.backgroundColor = orig;
-  	    }, 300);
-	}
-      });
+        	if (event.keyCode === 13) {
+                  event.preventDefault();
+        	  submitButton.click();
+        	}
+        	if (event.keyCode === 32) {
+        	  event.preventDefault();
+        	  reshuffleButton.click();
+        	  var orig = reshuffleButton.style.backgroundColor;
+        	  reshuffleButton.style.backgroundColor = "#DCDCDC";
+           	   setTimeout(function(){
+                      reshuffleButton.style.backgroundColor = orig;
+          	    }, 300);
+        	}
+              });
 
 
       cheatSubmitButton.onclick = function() {
@@ -294,11 +344,9 @@ $data = json_encode($puzzleJSON);
           rank.innerHTML = calculateRanking(totalPoints);
           console.log("ranking" + calculateRanking(totalPoints));
           console.log("points" + totalPoints);
-          //ranking = getRanking(userGuess);
-                //var totalPoints = parseInt(score.textContent) + turnPoints;
-                // have javascript send http (a form that has the word list)
-          // update the list of guessed words on the server
 
+        // have javascript send http (a form that has the word list)
+        // update the list of guessed words on the server
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", "generatePuzzleJSON.php?guessedWordList=" + guessedWordList, true);
         xmlHttp.send();
