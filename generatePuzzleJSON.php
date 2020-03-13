@@ -292,6 +292,7 @@ $username = json_encode($username);
                     reshuffleButton.style.backgroundColor = orig;
               }, 300);
         }
+        
       });
 
         
@@ -314,6 +315,16 @@ $username = json_encode($username);
         xmlHttp.send();
       }
 
+      
+      function checkLetter(letter){
+        if (puzzleLetters.includes(letter) && keyLetter == letter){
+          //yellow
+        } else if (puzzleLetters.includes(letter) && keyLetter != letter){
+          //black
+        } else{
+          //grey
+        }
+      }
       //Validate User Guess, Updates HTML 
       function validate(userGuess) {
         for (var i = 0; i < userGuess.length; i++){
