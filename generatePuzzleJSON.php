@@ -330,19 +330,24 @@ $username = json_encode($username);
         for (var i = 0; i < userGuess.length; i++){
           if(!(puzzleLetters.includes(userGuess.charAt(i))) && userGuess.charAt(i) != keyLetter){
             validation.innerHTML = "Bad letters.";
+	     return;
           }
         }
         if (userGuess.length < 4){
           validation.innerHTML = "Too short. ";
+	  return;
         }
         else if (!userGuess.includes(keyLetter)){
           validation.innerHTML = "Missing key letter. ";
+	  return;
         }
         else if (!solutions.includes(userGuess)) {
           validation.innerHTML = "Not in word list. ";
+	   return;
         }
         else if (guessedWordList.includes(userGuess)){
           validation.innerHTML = "Already guessed. ";
+          return;
         }
         else { // valid guess
           validation.innerHTML = "Valid guess!";
